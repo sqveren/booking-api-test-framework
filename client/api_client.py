@@ -18,9 +18,9 @@ class APIClient:
         response = self.session.post(url, json=data, **kwargs)
         return response
 
-    def put(self, endpoint: str, data: dict=None, **kwargs):
+    def put(self, endpoint: str, data: dict = None, headers=None, **kwargs):
         url = f"{self.base_url}{endpoint}"
-        response = self.session.put(url, json=data, **kwargs)
+        response = self.session.put(url, json=data, headers=headers, **kwargs)
         return response
 
     def patch(self, endpoint: str, data: dict=None, **kwargs):
