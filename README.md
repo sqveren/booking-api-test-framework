@@ -233,6 +233,9 @@ This project was created to practice:
 * Continuous Integration
 * Clean code principles
 
+## Test Report
 
+![Allure Report](docs/allure_report.png)
+![Allure Report](docs/allure_report1.png)
 
 Junior QA Automation Engineer
