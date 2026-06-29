@@ -1,27 +1,20 @@
-
+from utils.assertions import assert_status_code, assert_booking_fields
 
 
 def test_create_booking(booking_api, booking_data):
     response = booking_api.create_booking(booking_data)
-
-    assert response.status_code == 200
+    assert_status_code(response, 200)
     assert response.json()["bookingid"] is not None
 
 
 
-def test_update_booking(booking_api, booking_data):
+def test_update_booking(booking_api, booking_data, auth_headers):
     created = booking_api.create_booking(booking_data)
     booking_id = created.json()["bookingid"]
-
-    token = booking_api.auth().json()["token"]
-    headers = {"Cookie": f"token={token}"}
-
     updated_data = {**booking_data, "firstname": "Yurii", "totalprice": 999}
-    response = booking_api.update_booking(booking_id,updated_data, headers=headers)
-
-    assert response.status_code == 200
-    assert response.json()["firstname"] == "Yurii"
-    assert response.json()["totalprice"] == 999
+    response = booking_api.update_booking(booking_id, updated_data, headers=auth_headers)
+    assert_status_code(response, 200)
+    assert_booking_fields(response.json(), updated_data)
 
 
 def test_get_nonexisting_booking(booking_api):
