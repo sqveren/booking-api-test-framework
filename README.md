@@ -1,34 +1,55 @@
 # Booking API Test Automation Framework
 
-REST API test automation framework built with **Python**, **Pytest**, and **Requests** for testing the Restful Booker API.
+![API Tests](https://github.com/sqveren/booking-api-test-framework/actions/workflows/ci.yml/badge.svg)
+
+A REST API test automation framework built with **Python**, **Pytest**, and **Requests** for testing the **Restful Booker API**.
+
+This project demonstrates a scalable API automation framework using clean architecture, reusable components, CI/CD integration, and industry-standard QA Automation practices.
+
 ---
 
-## Features
+# Features
 
 * REST API testing
-* CRUD operations for Booking API
+* CRUD operations
 * Reusable HTTP client
 * API endpoint abstraction
-* Pytest fixtures
+* Pytest fixtures with setup/teardown
 * Positive and negative test scenarios
 * Smoke and regression test suites
+* Data models using Dataclasses
+* Custom assertion helpers
+* Allure reporting
 * GitHub Actions CI
-* Clean and scalable project structure
+* Clean and scalable project architecture
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-* Python 3.14
+* Python 3.x
 * Pytest
 * Requests
 * Dataclasses
+* Allure Report
 * Git
 * GitHub Actions
 
 ---
 
-## Project Structure
+# API Under Test
+
+**Base URL**
+
+```
+https://restful-booker.herokuapp.com
+```
+
+The framework automates testing of the public Restful Booker API, covering booking creation, retrieval, update, deletion, authentication, and error handling scenarios.
+
+---
+
+# Project Structure
 
 ```text
 booking-api-test-framework/
@@ -37,22 +58,26 @@ booking-api-test-framework/
 │   └── booking_api.py          # Booking API endpoint wrappers
 │
 ├── client/
-│   └── api_client.py           # HTTP client built on Requests
+│   └── api_client.py           # Reusable HTTP client
 │
 ├── models/
 │   └── booking_models.py       # Request/response data models
 │
 ├── tests/
-│   ├── test_create_booking.py
+│   ├── test_booking.py
 │   ├── test_get_booking.py
-│   ├── test_update_booking.py
 │   └── test_delete_booking.py
 │
 ├── utils/
-│   ├── assertions.py
-│   └── data_generator.py
+│   └── assertions.py           # Custom assertion helpers
 │
-├── conftest.py                 # Shared fixtures
+├── reports/
+│   └── allure/
+│
+├── docs/
+│   └── allure_report.png
+│
+├── conftest.py                 # Shared Pytest fixtures
 ├── pytest.ini
 ├── requirements.txt
 ├── .gitignore
@@ -61,9 +86,9 @@ booking-api-test-framework/
 
 ---
 
-## Architecture
+# Architecture
 
-The framework follows a simple three-layer architecture.
+The framework follows a simple **three-layer architecture**.
 
 ### APIClient
 
@@ -75,62 +100,66 @@ Responsible only for HTTP communication.
 * PATCH
 * DELETE
 
+No business logic is implemented in this layer.
+
+---
+
 ### BookingAPI
 
-Contains endpoint wrappers for the Booking API.
+Provides endpoint wrappers for the Booking API.
 
 Responsibilities:
 
 * build endpoint URLs
-* call APIClient methods
-* provide reusable API methods
+* call HTTP client methods
+* expose reusable API operations
 
-No business validations or assertions are implemented here.
+This layer contains **no assertions or test logic**.
+
+---
 
 ### Tests
 
-Test files contain all verification logic.
+All verification logic is implemented inside the test layer.
 
 Responsibilities:
 
-* validate status codes
+* validate HTTP status codes
 * validate response payloads
-* validate business rules
-* verify positive and negative scenarios
+* verify business rules
+* execute positive and negative scenarios
 
 ---
 
-## Test Coverage
+# Test Coverage
 
-### Smoke Tests
+## Smoke Tests
 
 * Create booking
 * Get booking by ID
+* Get all bookings
 * Update booking
 * Delete booking
-* Get all bookings
 
-### Regression Tests
+## Regression Tests
 
 * Get nonexistent booking
+* Get booking with negative ID
 * Create booking with invalid payload
+* Create booking with missing required fields
 * Update booking without authentication
 * Update booking with invalid token
 * Delete booking without authentication
+* Delete nonexistent booking
 
 ---
 
-## Installation
+# Installation
 
 Clone the repository.
 
 ```bash
 git clone https://github.com/sqveren/booking-api-test-framework.git
-```
-
-Go to the project directory.
-
-```bash
 cd booking-api-test-framework
 ```
 
@@ -142,19 +171,19 @@ python -m venv .venv
 
 Activate it.
 
-Windows
+### Windows
 
 ```bash
 .venv\Scripts\activate
 ```
 
-Linux / macOS
+### Linux / macOS
 
 ```bash
 source .venv/bin/activate
 ```
 
-Install dependencies.
+Install project dependencies.
 
 ```bash
 pip install -r requirements.txt
@@ -162,15 +191,9 @@ pip install -r requirements.txt
 
 ---
 
-## Running Tests
+# Running Tests
 
-Run all tests.
-
-```bash
-pytest
-```
-
-Verbose mode.
+Run the complete test suite.
 
 ```bash
 pytest -v
@@ -188,54 +211,57 @@ Run only regression tests.
 pytest -m regression
 ```
 
-Generate HTML report.
+---
+
+# Allure Report
+
+Generate Allure results.
 
 ```bash
-pytest --html=report.html
+pytest --alluredir=reports/allure
 ```
 
----
+Open the report.
 
-## Continuous Integration
+```bash
+allure serve reports/allure
+```
 
-The project uses GitHub Actions to automatically:
-
-* install dependencies
-* execute test suite
-* validate every push and pull request
-
----
-
-## Future Improvements
-
-* Authentication support
-* Environment configuration
-* Allure reporting
-* Logging
-* Request/response models
-* Test data generation
-* Docker support
-* Parallel test execution
-* API schema validation
-
----
-
-## Learning Goals
-
-This project was created to practice:
-
-* API Test Automation
-* Python
-* Pytest
-* REST API testing
-* Test framework architecture
-* Git & GitHub
-* Continuous Integration
-* Clean code principles
-
-## Test Report
+Example report:
 
 ![Allure Report](docs/allure_report.png)
-![Allure Report](docs/allure_report1.png)
+![Allure Report](docs/allure_report2.png)
+
+---
+
+# Continuous Integration
+
+The project uses **GitHub Actions** to automatically:
+
+* install dependencies
+* run the complete test suite
+* validate every push
+* validate every pull request
+
+---
+
+# Future Improvements
+
+* Docker support
+* Environment configuration
+* Parallel test execution
+* API schema validation
+* Test data generation with Faker
+* Performance API testing
+* JSON Schema validation
+* Automatic test reporting
+
+---
+
+# Author
+
+**Yurii**
 
 Junior QA Automation Engineer
+
+GitHub: https://github.com/sqveren
