@@ -26,3 +26,10 @@ def booking_data():
         ),
         additionalneeds="Breakfast"
     ).to_dict()
+
+@pytest.fixture
+def created_booking(booking_api, booking_data, auth_headers):
+    response = booking_api.create_booking(booking_data)
+    booking_id = response.json()["bookingid"]
+    yield booking_id
+    booking_api.delete_booking(booking_id, headers=auth_headers)
