@@ -1,7 +1,7 @@
 import pytest
 from client.api_client import APIClient
 from api.booking_api import BookingAPI
-from models.booking_model import Booking, BookingDates
+from models.booking_models import Booking, BookingDates
 
 @pytest.fixture(scope="session")
 def booking_api():
