@@ -28,10 +28,9 @@ class APIClient:
         response = self.session.patch(url, json=data, **kwargs)
         return response
 
-    def delete(self, endpoint: str):
+    def delete(self, endpoint: str, headers=None):
         url = f"{self.base_url}{endpoint}"
-        response = self.session.delete(url)
-        return response
+        return self.session.delete(url, headers=headers)
 
 
 

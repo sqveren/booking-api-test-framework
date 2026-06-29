@@ -7,6 +7,11 @@ def booking_api():
     client = APIClient("https://restful-booker.herokuapp.com")
     return BookingAPI(client)
 
+@pytest.fixture(scope="session")
+def auth_headers(booking_api):
+    token = booking_api.auth().json()["token"]
+    return {"Cookie": f"token={token}"}
+
 @pytest.fixture
 def booking_data():
     return {
